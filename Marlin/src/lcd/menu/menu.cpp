@@ -360,7 +360,7 @@ void MarlinUI::completion_feedback(const bool good/*=true*/) {
   void lcd_babystep_zoffset() {
     if (ui.use_click()) return ui.goto_previous_screen_no_defer();
     ui.defer_status_screen(true);
-    #if ENABLED(REQUIRE_HOME_BEFORE_BABYSTEP)
+    #if ENABLED(AUTOHOME_BEFORE_BABYSTEP)
       if (!all_axes_homed()) {
         _lcd_draw_homing();
         return;
