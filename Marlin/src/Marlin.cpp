@@ -448,10 +448,10 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
   #endif
 
   #if ENABLED(BABYSTEP_DEFER_STEPPER_TIMOUT)
-    #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-      #define BABYSTEP_DEFER currentScreen != lcd_babystep_zoffset
+    #if ENABLED(BABYSTEP_ZPROBE_OFFSET) && HAS_LCD_MENU
+      #define BABYSTEP_DEFER true //ui.currentScreen != ui.lcd_babystep_zoffset
     #else
-      #define BABYSTEP_DEFER currentScreen != lcd_babystep_z
+      #define BABYSTEP_DEFER ui.currentScreen != lcd_babystep_z
     #endif
   #else
     #define BABYSTEP_DEFER true
@@ -477,7 +477,7 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
           disable_e_steppers();
         #endif
         #if HAS_LCD_MENU 
-          ui.reset();
+          ui.status_screen();
           #if ENABLED(AUTO_BED_LEVELING_UBL)
             if (ubl.lcd_map_control) {
               ubl.lcd_map_control = false;

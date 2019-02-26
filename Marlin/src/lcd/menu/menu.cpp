@@ -225,6 +225,11 @@ void MarlinUI::goto_screen(screenFunc_t screen, const uint32_t encoder/*=0*/) {
           const bool should_babystep = printer_busy();
         #endif
         if (should_babystep && can_babystep ) {
+          #if ENABLED(REQUIRE_HOME_BEFORE_BABYSTEP) && ENABLED(AUTOHOME_BEFORE_BABYSTEP)
+            if(!all_axes_known())
+              enqueue_and_echo_commands_P(PSTR("G28"));
+              enqueue_and_echo_commands_P(PSTR("G1 Z0"));
+          #endif
           screen =
             #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
               lcd_babystep_zoffset
@@ -355,9 +360,11 @@ void MarlinUI::completion_feedback(const bool good/*=true*/) {
   void lcd_babystep_zoffset() {
     if (ui.use_click()) return ui.goto_previous_screen_no_defer();
     ui.defer_status_screen(true);
-    #if ENABLED(REQUIRE_HOME_BEFORE_BABYSTEP) && ENABLED(AUTOHOME_BEFORE_BABYSTEP)
-      if(!all_axes_known())
-        enqueue_and_echo_commands_P(PSTR("G28"));
+    #if ENABLED(REQUIRE_HOME_BEFORE_BABYSTEP)
+      if (!all_axes_homed()) {
+        _lcd_draw_homing();
+        return;
+      }
     #endif
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
       const bool do_probe = (active_extruder == 0);
