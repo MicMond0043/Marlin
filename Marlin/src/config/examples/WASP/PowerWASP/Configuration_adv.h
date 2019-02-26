@@ -940,6 +940,7 @@
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
   #define BABYSTEP_MULTIPLICATOR  10        // Babysteps are very small. Increase for faster motion.
 
+  //#define DOUBLECLICK_FOR_Z_BABYSTEPPING  // Double-click on the Status Screen for Z Babystepping.
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)
     #define BABYSTEP_ON_STEPPER_ACTIVE      // Enable menu on stepper active instead of printer busy
     #define BABYSTEP_DEFER_STEPPER_TIMOUT   // Prevents stepper timeout while on Babystepping screen
